@@ -103,9 +103,10 @@ export const KnowledgeQuestView: React.FC<KnowledgeQuestViewProps> = ({
   const currentCard = flashcards[activeCardIdx];
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#1C1917] via-[#292524] to-[#451A03] text-amber-50 pb-28 select-none">
-      {/* Top Header Bar */}
-      <div className="sticky top-0 z-40 bg-stone-950/90 backdrop-blur-md border-b-3 border-amber-600 px-6 py-4 flex items-center justify-between shadow-xl">
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#1C1917] via-[#292524] to-[#451A03] text-amber-50 pb-28 pt-20 select-none">
+      {/* Top Header Bar — flows below the sticky app navbar to avoid clipping.
+          z-10 keeps it under the global Header (z-40); pt-20 on the root clears the navbar. */}
+      <div className="relative z-10 bg-stone-950/90 backdrop-blur-md border-b-3 border-amber-600 px-6 py-4 flex items-center justify-between shadow-xl">
         <button
           onClick={() => {
             soundManager.playVineSwing();
@@ -136,7 +137,7 @@ export const KnowledgeQuestView: React.FC<KnowledgeQuestViewProps> = ({
         </button>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <div className="max-w-4xl mx-auto px-4 py-6 space-y-8">
         {/* Banner: Pre-Boss Revision Warning */}
         <div className="relative overflow-hidden bg-gradient-to-r from-amber-950/90 via-stone-900/90 to-amber-950/90 border-3 border-amber-500 rounded-3xl p-6 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-4">

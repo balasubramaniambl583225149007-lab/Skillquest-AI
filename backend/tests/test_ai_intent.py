@@ -146,3 +146,23 @@ async def test_wrong_answer_inquiry_provides_socratic_nudge():
     assert "5.0" in guidance
     # Socratic question mark present
     assert "?" in guidance
+
+
+@pytest.mark.asyncio
+async def test_intent_classifier_covers_all_eight_categories():
+    """
+    Contract test: the classifier must be able to emit each of the 8 explicit intents.
+    """
+    cases = {
+        "Hi there": INTENT_GREETING_CASUAL,
+        "Give me a hint please": INTENT_HINT_REQUEST,
+        "What is an operational amplifier?": INTENT_CONCEPT_EXPLANATION,
+        "Why is my output incorrect?": INTENT_WRONG_ANSWER_INQUIRY,
+        "Help me understand the formula in the notes": INTENT_LEVEL_NOTES_HELP,
+        "Help me review for the boss": INTENT_KNOWLEDGE_QUEST_HELP,
+        "What is my weakest topic?": INTENT_WEAK_SKILL_INQUIRY,
+        "Write me a poem": INTENT_OFF_TOPIC,
+    }
+    for message, expected in cases.items():
+        intent = await socratic_tutor.classify_intent(message, active_view="WORKBENCH")
+        assert intent == expected, f"{message!r} -> {intent}, expected {expected}"

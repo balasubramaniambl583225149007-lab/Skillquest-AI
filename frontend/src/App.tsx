@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UserProfile, CourseTrack } from './types';
 import { Header } from './components/Header';
+import { ForestBackground } from './components/ForestBackground';
 import { HomeView } from './views/HomeView';
 import { LearningMapView } from './views/LearningMapView';
 import { WorkbenchView } from './views/WorkbenchView';
@@ -12,12 +13,19 @@ import { soundManager } from './utils/soundManager';
 
 export const App: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [activeView, setActiveView] = useState<'home' | 'learn' | 'wardrobe' | 'leagues' | 'workbench'>('learn');
+  // Default landing is the Home Page Hub, not the Quest Map.
+  const [activeView, setActiveView] = useState<'home' | 'learn' | 'wardrobe' | 'leagues' | 'workbench'>('home');
   const [selectedTrack, setSelectedTrack] = useState<CourseTrack>('EEE');
   const [selectedLevelId, setSelectedLevelId] = useState<string>('eee-lvl-1');
 
   useEffect(() => {
     loadProfile();
+
+    // Autoplay guard: unlock the Howler audio engine on the first user gesture.
+    const unlockAudio = () => soundManager.unlockOnFirstInteraction();
+    window.addEventListener('pointerdown', unlockAudio, { once: true });
+    window.addEventListener('keydown', unlockAudio, { once: true });
+    window.addEventListener('touchstart', unlockAudio, { once: true });
 
     // Listen to Supabase OAuth State Change
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -37,6 +45,9 @@ export const App: React.FC = () => {
     });
 
     return () => {
+      window.removeEventListener('pointerdown', unlockAudio);
+      window.removeEventListener('keydown', unlockAudio);
+      window.removeEventListener('touchstart', unlockAudio);
       authListener?.subscription.unsubscribe();
     };
   }, []);
@@ -74,7 +85,9 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#064E3B] text-amber-50 flex flex-col selection:bg-amber-400 selection:text-amber-950 font-sans">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#022c1e] via-[#064e3b] to-[#011c13] text-amber-50 flex flex-col selection:bg-amber-400 selection:text-amber-950 font-sans">
+      {/* Full-bleed organic jungle canvas (Home view only) */}
+      {activeView === 'home' && <ForestBackground />}
       {/* Top Navigation Rustic Wooden Header */}
       {activeView !== 'workbench' && (
         <Header

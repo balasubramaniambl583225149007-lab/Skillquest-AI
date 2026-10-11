@@ -8,6 +8,7 @@ interface SpikeRhinoAvatarProps {
   size?: number;
   className?: string;
   animate?: boolean;
+  speechBubble?: string; // When set, renders an animated speech bubble above Spike.
 }
 
 export const SpikeRhinoAvatar: React.FC<SpikeRhinoAvatarProps> = ({
@@ -16,6 +17,7 @@ export const SpikeRhinoAvatar: React.FC<SpikeRhinoAvatarProps> = ({
   size = 120,
   className = '',
   animate = true,
+  speechBubble,
 }) => {
   // Normalize outfit code
   const code = (outfit || 'SAFARI_EXPLORER').toUpperCase();
@@ -27,6 +29,14 @@ export const SpikeRhinoAvatar: React.FC<SpikeRhinoAvatarProps> = ({
       }`}
       style={{ width: size, height: size }}
     >
+      {speechBubble && (
+        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-20 animate-bounce pointer-events-none">
+          <div className="relative bg-amber-50 text-amber-950 font-bold text-xs px-3 py-1.5 rounded-2xl border-2 border-amber-600 shadow-[0_3px_0_#92400E] whitespace-nowrap">
+            {speechBubble}
+            <span className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 bg-amber-50 border-b-2 border-r-2 border-amber-600 rotate-45" />
+          </div>
+        </div>
+      )}
       <svg
         viewBox="0 0 200 200"
         width="100%"
@@ -48,6 +58,13 @@ export const SpikeRhinoAvatar: React.FC<SpikeRhinoAvatarProps> = ({
             <stop offset="30%" stopColor="#FDE047" />
             <stop offset="70%" stopColor="#F59E0B" />
             <stop offset="100%" stopColor="#B45309" />
+          </linearGradient>
+          {/* Metallic sheen stripe for horn reflections */}
+          <linearGradient id="hornSheen" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
+            <stop offset="45%" stopColor="#FFFFFF" stopOpacity="0.85" />
+            <stop offset="60%" stopColor="#FFFFFF" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="safariPithGrad" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#FEF3C7" />
@@ -187,6 +204,8 @@ export const SpikeRhinoAvatar: React.FC<SpikeRhinoAvatarProps> = ({
             stroke="#92400E"
             strokeWidth="2.5"
           />
+          {/* Metallic reflection highlight along the horn ridge */}
+          <path d="M99 66C99 51 99.7 42 100.4 35" stroke="url(#hornSheen)" strokeWidth="1.6" strokeLinecap="round" fill="none" opacity="0.9" />
           {/* Mini Cute Secondary Horn */}
           <path d="M97 76C97 71 98 67 100 65C102 67 103 71 103 76Z" fill="url(#hornGrad3D)" stroke="#92400E" strokeWidth="1.5" />
 
