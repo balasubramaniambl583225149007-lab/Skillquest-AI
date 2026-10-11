@@ -108,6 +108,88 @@
   background-color: #F9FAFB;
 }
 
+/* Adventure primary CTA: emerald jungle wood */
+.btn-3d-primary {
+  background-color: #059669;
+  color: #F0FDF4;
+  box-shadow: 0 4px 0 #047857;
+}
+.btn-3d-primary:hover {
+  background-color: #10B981;
+}
+
+/* Adventure secondary CTA: warm amber wood */
+.btn-3d-secondary {
+  background-color: #D97706;
+  color: #FFFBEB;
+  box-shadow: 0 4px 0 #B45309;
+}
+.btn-3d-secondary:hover {
+  background-color: #F59E0B;
+}
+
+/* Dark-wood / parchment adventure card */
+.adventure-card {
+  background: linear-gradient(160deg, #164e3d 0%, #0f382c 100%);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  box-shadow: 0 8px 0 rgba(2, 20, 13, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ---------------------------------------------------------------------------
+   Forest ambience animation library
+--------------------------------------------------------------------------- */
+@keyframes float-glow {
+  0%, 100% {
+    opacity: 0.15;
+    transform: translateY(0) scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-14px) scale(1.15);
+  }
+}
+
+@keyframes canopy-sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+
+@keyframes vine-sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes monkey-swing {
+  0%, 100% { transform: rotate(-16deg) translateY(0); }
+  50% { transform: rotate(16deg) translateY(-6px); }
+}
+
+@keyframes toucan-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes firefly-drift {
+  0% { transform: translate(0, 0); opacity: 0.2; }
+  25% { opacity: 1; }
+  50% { transform: translate(18px, -22px); opacity: 0.5; }
+  75% { opacity: 1; }
+  100% { transform: translate(-10px, -40px); opacity: 0; }
+}
+
+.animate-canopy-sway { animation: canopy-sway 9s ease-in-out infinite; transform-origin: top center; }
+.animate-vine-sway { animation: vine-sway 5s ease-in-out infinite; transform-origin: top center; }
+.animate-monkey-swing { animation: monkey-swing 3.5s ease-in-out infinite; transform-origin: top center; }
+.animate-toucan-bob { animation: toucan-bob 2.6s ease-in-out infinite; }
+.firefly { animation: float-glow 4s ease-in-out infinite; }
+.firefly-drift { animation: firefly-drift 9s linear infinite; animation-fill-mode: both; }
+
+/* 3D flip-card helpers */
+.perspective-1000 { perspective: 1000px; }
+.transform-style-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }
+
 /* Node pulse effect for decayed skills */
 @keyframes pulse-decay {
   0%, 100% {

@@ -1,5 +1,5 @@
 -- Migration: Add Level Notes and Knowledge Quests
--- File: supabase/migrations/20261007_add_level_notes_and_knowledge_quests.sql
+-- File: supabase/migrations/20261010_add_notes_and_quests.sql
 
 -- 1. Create public.level_notes Table
 CREATE TABLE IF NOT EXISTS public.level_notes (

@@ -1,0 +1,29 @@
+# AGENTS.md — Skill Quest AI
+
+Repository-specific knowledge for agent sessions.
+
+## Layout
+- `backend/` — FastAPI + SQLAlchemy (async) microservice.
+  - `app/main.py` — entrypoint; routers live in `app/routes/*` and are re-exported from `app/routers/*` (keep both paths working).
+  - `app/db/` — `models.py` (ORM), `database.py` (engine), `seed_curriculum.py` (seed data).
+  - `app/services/socratic_tutor.py` — Spike intent classifier + persona orchestration.
+  - `app/simulation/` — deterministic SPICE / code-sandbox / truth-table engines.
+  - Fallback DB is `sqlite+aiosqlite:///./skillquest.db`; Postgres via `DATABASE_URL`.
+- `frontend/` — React 19 + Vite + Tailwind v4 (via `@tailwindcss/vite`).
+  - Global CSS is `src/index.css` (imports Tailwind). **`src/App.css` is dead/unused.**
+  - `src/utils/soundManager.ts` — Howler.js audio engine; samples in `public/sounds/*.mp3`.
+  - `src/components/ForestBackground.tsx` — reusable decorative jungle canvas.
+  - `vite.config.ts` proxies `/api` -> `http://127.0.0.1:8000`.
+
+## Commands
+- Backend tests: `python -m pytest backend/tests/ backend/test_suite.py -q` (needs `fastapi`, `sqlalchemy`, `httpx`, `pytest`, `pytest-asyncio`).
+- Frontend: `npm run typecheck`, `npm run build`, `npm run lint` (oxlint).
+- Dev servers: backend `python -m uvicorn app.main:app --port 8000`; frontend `npm run dev -- --port 12000 --host 0.0.0.0`.
+- Work-host access requires `server.allowedHosts: ['.prod-runtime.all-hands.dev']` in `vite.config.ts`.
+
+## Conventions / gotchas
+- Both `app/routes/*` (implementation) and `app/routers/*` (re-export shims) exist; edit the `app/routes/*` files.
+- `seed_database()` populates levels/notes/quests; endpoints return safe 200 fallbacks when data is unseeded — never 404.
+- Spike `classify_intent` uses a regex fast-pass then an optional Gemini call with a 1.4s timeout. Keep the 8 intent constants stable.
+- Jungle UI theme: emerald/amber palette, `adventure-card` class, `btn-3d-primary`/`btn-3d-secondary` CTAs, forest keyframes in `index.css`.
+- Audio samples are generated with ffmpeg (no external assets); `soundManager` has a Web Audio synth fallback on load/play error.
